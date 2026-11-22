@@ -39,7 +39,9 @@ use the editor.
 
 ## Build & deploy
 - `npm install` (npm; `bun.lock` also present for Lovable), `npm run dev` (port 8080), `npm run build`, `npm run lint`, `npm run test`.
-- Production target: Cloudflare Workers via Nitro (`cloudflare-module` preset). Build emits `.output/`; deploy with `cd .output/server && npx wrangler deploy` (requires `wrangler login` or `CLOUDFLARE_API_TOKEN`). Live at https://workingosofficial-org-xoensoft.xoensoft.workers.dev
-- `vite preview` does NOT work for this stack (expects `dist/server`); preview the real build with `npx wrangler dev` inside `.output/server`.
-- Security headers are set in `src/server.ts` (SSR) and `public/_headers` (static assets, merged into `.output/public/_headers` by Nitro).
-- XS One Android APK is hosted as a GitHub Release asset on this repo, not in `public/` (too large for Workers static assets). Update `src/data/products.ts` when cutting a new release.
+- Production target: **Cloudflare Pages** via Nitro `cloudflare-pages` preset (set in `vite.config.ts`). Build emits `dist/` (static assets + `_worker.js` SSR + `_routes.json`/`_headers`/`_redirects`).
+- Deploy: `npx wrangler pages deploy dist --project-name=xoensoftofficial --branch=main` (project already exists; `wrangler login` or `CLOUDFLARE_API_TOKEN` required).
+- Live at **https://xoensoftofficial.pages.dev** — the branded public URL. Do not redeploy the old Workers target.
+- `vite preview` does NOT work for this stack; preview locally with `npx wrangler pages dev dist`.
+- Security headers are set in `src/server.ts` (SSR) and `public/_headers` (static assets, merged by Nitro into `dist/_headers`).
+- XS One Android APK is hosted as a GitHub Release asset on this repo, not in `public/` (too large for static hosting). Update `src/data/products.ts` when cutting a new release.

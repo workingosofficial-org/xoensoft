@@ -15,4 +15,7 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  // Deploy target: Cloudflare Pages (xoensoftofficial.pages.dev).
+  // Produces .output/public with a Pages _worker.js for SSR + static assets.
+  nitro: { preset: "cloudflare-pages" },
 });
