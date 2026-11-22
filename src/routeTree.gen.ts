@@ -11,9 +11,12 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as OneRouteImport } from './routes/one'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as SupportRouteImport } from './routes/support'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as DownloadsIndexRouteImport } from './routes/downloads/index'
 import { Route as DownloadsSlugRouteImport } from './routes/downloads/$slug'
 import { Route as ProductsSlugRouteImport } from './routes/products/$slug'
@@ -28,9 +31,19 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OneRoute = OneRouteImport.update({
   id: '/one',
   path: '/one',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SignInRoute = SignInRouteImport.update({
@@ -41,6 +54,11 @@ const SignInRoute = SignInRouteImport.update({
 const SupportRoute = SupportRouteImport.update({
   id: '/support',
   path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DownloadsIndexRoute = DownloadsIndexRouteImport.update({
@@ -62,9 +80,12 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/one': typeof OneRoute
+  '/privacy': typeof PrivacyRoute
   '/sign-in': typeof SignInRoute
   '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
   '/downloads/$slug': typeof DownloadsSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/downloads/': typeof DownloadsIndexRoute
@@ -72,9 +93,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/one': typeof OneRoute
+  '/privacy': typeof PrivacyRoute
   '/sign-in': typeof SignInRoute
   '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
   '/downloads/$slug': typeof DownloadsSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/downloads': typeof DownloadsIndexRoute
@@ -83,9 +107,12 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/one': typeof OneRoute
+  '/privacy': typeof PrivacyRoute
   '/sign-in': typeof SignInRoute
   '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
   '/downloads/$slug': typeof DownloadsSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/downloads/': typeof DownloadsIndexRoute
@@ -95,9 +122,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/contact'
     | '/one'
+    | '/privacy'
     | '/sign-in'
     | '/support'
+    | '/terms'
     | '/downloads/$slug'
     | '/products/$slug'
     | '/downloads/'
@@ -105,9 +135,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/contact'
     | '/one'
+    | '/privacy'
     | '/sign-in'
     | '/support'
+    | '/terms'
     | '/downloads/$slug'
     | '/products/$slug'
     | '/downloads'
@@ -115,9 +148,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/contact'
     | '/one'
+    | '/privacy'
     | '/sign-in'
     | '/support'
+    | '/terms'
     | '/downloads/$slug'
     | '/products/$slug'
     | '/downloads/'
@@ -126,9 +162,12 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
   OneRoute: typeof OneRoute
+  PrivacyRoute: typeof PrivacyRoute
   SignInRoute: typeof SignInRoute
   SupportRoute: typeof SupportRoute
+  TermsRoute: typeof TermsRoute
   DownloadsSlugRoute: typeof DownloadsSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   DownloadsIndexRoute: typeof DownloadsIndexRoute
@@ -150,11 +189,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/one': {
       id: '/one'
       path: '/one'
       fullPath: '/one'
       preLoaderRoute: typeof OneRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sign-in': {
@@ -169,6 +222,13 @@ declare module '@tanstack/react-router' {
       path: '/support'
       fullPath: '/support'
       preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/downloads/': {
@@ -198,9 +258,12 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
   OneRoute: OneRoute,
+  PrivacyRoute: PrivacyRoute,
   SignInRoute: SignInRoute,
   SupportRoute: SupportRoute,
+  TermsRoute: TermsRoute,
   DownloadsSlugRoute: DownloadsSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   DownloadsIndexRoute: DownloadsIndexRoute,

@@ -349,9 +349,22 @@ export const products: Product[] = [
       releaseNotes: [
         "Web app beta with projects, tasks, priorities and due dates",
         "Progress dashboard",
-        "Android and desktop apps in development",
+        "Android beta available now — desktop apps in development",
       ],
-      builds: withWeb(planned(["web", "android", "windows", "macos", "linux"]), oneUrl),
+      builds: withWeb(
+        planned(["web", "android", "windows", "macos", "linux"]).map((b) =>
+          b.platform === "android"
+            ? {
+                ...b,
+                availability: "available" as const,
+                downloadUrl:
+                  "https://github.com/workingosofficial-org/xoensoft/releases/download/v1.0.0-beta/xs-one-1.0.0-beta.apk",
+                fileSize: "27 MB",
+              }
+            : b,
+        ),
+        oneUrl,
+      ),
     },
   },
 ];

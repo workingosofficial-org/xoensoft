@@ -10,6 +10,7 @@ const mobileLinks = [
   { to: "/", l: "Home" },
   { to: "/downloads", l: "Downloads" },
   { to: "/about", l: "About" },
+  { to: "/contact", l: "Contact" },
   { to: "/support", l: "Support" },
   { to: "/sign-in", l: "Sign In" },
 ] as const;
@@ -90,6 +91,9 @@ export function Nav() {
           </Link>
           <Link to="/about" className={navLink} activeProps={{ className: "text-foreground" }}>
             About
+          </Link>
+          <Link to="/contact" className={navLink} activeProps={{ className: "text-foreground" }}>
+            Contact
           </Link>
         </nav>
 

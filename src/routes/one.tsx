@@ -1,6 +1,16 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { Plus, Trash2, Check, Users, User, CalendarDays, LayoutGrid } from "lucide-react";
+import {
+  Plus,
+  Trash2,
+  Check,
+  Users,
+  User,
+  CalendarDays,
+  LayoutGrid,
+  Pencil,
+  X,
+} from "lucide-react";
 import { XMark } from "@/components/site/brand";
 import {
   KEY,
@@ -34,6 +44,13 @@ function OneApp() {
   const [due, setDue] = useState("");
   const [priority, setPriority] = useState<Priority>("medium");
   const [newProject, setNewProject] = useState("");
+  const [editing, setEditing] = useState<{
+    id: string;
+    title: string;
+    due: string;
+    priority: Priority;
+    projectId: string;
+  } | null>(null);
 
   useEffect(() => {
     try {
@@ -265,64 +282,155 @@ function OneApp() {
                 Nothing here. Enjoy the calm.
               </li>
             )}
-            {visible.map((t) => (
-              <li key={t.id} className="group flex items-center gap-4 py-4">
-                <button
-                  aria-label={t.done ? "Mark as not done" : "Mark as done"}
-                  onClick={() =>
-                    update((s) => ({
-                      ...s,
-                      tasks: s.tasks.map((x) => (x.id === t.id ? { ...x, done: !x.done } : x)),
-                    }))
-                  }
-                  className={cn(
-                    "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors",
-                    t.done
-                      ? "border-foreground bg-foreground text-background"
-                      : "border-muted-foreground hover:border-foreground",
-                  )}
-                >
-                  {t.done && <Check className="h-3 w-3" />}
-                </button>
-                <span
-                  className={cn("flex-1 text-sm", t.done && "text-muted-foreground line-through")}
-                >
-                  {t.title}
-                </span>
-                {view.kind !== "project" && (
-                  <span className="hidden text-xs text-muted-foreground sm:inline">
-                    {state.projects.find((p) => p.id === t.projectId)?.name}
-                  </span>
-                )}
-                {t.due && (
-                  <span
+            {visible.map((t) =>
+              editing?.id === t.id ? (
+                <li key={t.id} className="py-4">
+                  <form
+                    className="flex flex-wrap items-center gap-2"
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      if (!editing.title.trim()) return;
+                      update((s) => ({
+                        ...s,
+                        tasks: s.tasks.map((x) =>
+                          x.id === t.id
+                            ? {
+                                ...x,
+                                title: editing.title.trim(),
+                                due: editing.due || undefined,
+                                priority: editing.priority,
+                                projectId: editing.projectId,
+                              }
+                            : x,
+                        ),
+                      }));
+                      setEditing(null);
+                    }}
+                  >
+                    <input
+                      value={editing.title}
+                      onChange={(e) => setEditing({ ...editing, title: e.target.value })}
+                      aria-label="Edit task title"
+                      className="min-w-0 flex-[2_1_200px] rounded-md border border-input bg-surface px-3 py-2 text-sm"
+                    />
+                    <input
+                      type="date"
+                      value={editing.due}
+                      onChange={(e) => setEditing({ ...editing, due: e.target.value })}
+                      aria-label="Edit due date"
+                      className="rounded-md border border-input bg-surface px-3 py-2 text-sm [color-scheme:dark]"
+                    />
+                    <select
+                      value={editing.priority}
+                      onChange={(e) =>
+                        setEditing({ ...editing, priority: e.target.value as Priority })
+                      }
+                      aria-label="Edit priority"
+                      className="rounded-md border border-input bg-surface px-3 py-2 text-sm"
+                    >
+                      <option value="high">High</option>
+                      <option value="medium">Medium</option>
+                      <option value="low">Low</option>
+                    </select>
+                    <select
+                      value={editing.projectId}
+                      onChange={(e) => setEditing({ ...editing, projectId: e.target.value })}
+                      aria-label="Edit project"
+                      className="rounded-md border border-input bg-surface px-3 py-2 text-sm"
+                    >
+                      {state.projects.map((p) => (
+                        <option key={p.id} value={p.id}>
+                          {p.name}
+                        </option>
+                      ))}
+                    </select>
+                    <button className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground">
+                      Save
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Cancel edit"
+                      onClick={() => setEditing(null)}
+                      className="rounded-md border border-border px-3 py-2 text-sm text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </form>
+                </li>
+              ) : (
+                <li key={t.id} className="group flex items-center gap-4 py-4">
+                  <button
+                    aria-label={t.done ? "Mark as not done" : "Mark as done"}
+                    onClick={() =>
+                      update((s) => ({
+                        ...s,
+                        tasks: s.tasks.map((x) => (x.id === t.id ? { ...x, done: !x.done } : x)),
+                      }))
+                    }
                     className={cn(
-                      "font-mono text-xs",
-                      isOverdue(t, today) ? "text-destructive" : "text-muted-foreground",
+                      "flex h-5 w-5 shrink-0 items-center justify-center rounded-full border transition-colors",
+                      t.done
+                        ? "border-foreground bg-foreground text-background"
+                        : "border-muted-foreground hover:border-foreground",
                     )}
                   >
-                    {t.due === today ? "Today" : t.due}
+                    {t.done && <Check className="h-3 w-3" />}
+                  </button>
+                  <span
+                    className={cn("flex-1 text-sm", t.done && "text-muted-foreground line-through")}
+                  >
+                    {t.title}
                   </span>
-                )}
-                <span
-                  className={cn(
-                    "w-14 text-right font-mono text-[10px] uppercase tracking-widest",
-                    t.priority === "high" ? "text-foreground" : "text-muted-foreground",
+                  {view.kind !== "project" && (
+                    <span className="hidden text-xs text-muted-foreground sm:inline">
+                      {state.projects.find((p) => p.id === t.projectId)?.name}
+                    </span>
                   )}
-                >
-                  {t.priority}
-                </span>
-                <button
-                  aria-label="Delete task"
-                  onClick={() =>
-                    update((s) => ({ ...s, tasks: s.tasks.filter((x) => x.id !== t.id) }))
-                  }
-                  className="text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 focus:opacity-100"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </li>
-            ))}
+                  {t.due && (
+                    <span
+                      className={cn(
+                        "font-mono text-xs",
+                        isOverdue(t, today) ? "text-destructive" : "text-muted-foreground",
+                      )}
+                    >
+                      {t.due === today ? "Today" : t.due}
+                    </span>
+                  )}
+                  <span
+                    className={cn(
+                      "w-14 text-right font-mono text-[10px] uppercase tracking-widest",
+                      t.priority === "high" ? "text-foreground" : "text-muted-foreground",
+                    )}
+                  >
+                    {t.priority}
+                  </span>
+                  <button
+                    aria-label="Edit task"
+                    onClick={() =>
+                      setEditing({
+                        id: t.id,
+                        title: t.title,
+                        due: t.due ?? "",
+                        priority: t.priority,
+                        projectId: t.projectId,
+                      })
+                    }
+                    className="text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 focus:opacity-100"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </button>
+                  <button
+                    aria-label="Delete task"
+                    onClick={() =>
+                      update((s) => ({ ...s, tasks: s.tasks.filter((x) => x.id !== t.id) }))
+                    }
+                    className="text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover:opacity-100 focus:opacity-100"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </li>
+              ),
+            )}
           </ul>
           <p className="mt-6 text-xs text-muted-foreground">
             Public beta · tasks are saved on this device. Sync across devices arrives with XOENSOFT

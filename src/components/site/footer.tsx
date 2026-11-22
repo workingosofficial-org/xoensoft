@@ -58,6 +58,11 @@ export function Footer() {
               </Link>
             </li>
             <li>
+              <Link to="/contact" className="text-muted-foreground hover:text-foreground">
+                Contact
+              </Link>
+            </li>
+            <li>
               <Link to="/support" className="text-muted-foreground hover:text-foreground">
                 Support
               </Link>
@@ -72,6 +77,14 @@ export function Footer() {
       </div>
       <div className="container-x flex flex-col justify-between gap-2 border-t border-border py-6 text-xs text-muted-foreground md:flex-row">
         <span>© 2026 XOENSOFT. All rights reserved.</span>
+        <span className="flex gap-5">
+          <Link to="/privacy" className="hover:text-foreground">
+            Privacy Policy
+          </Link>
+          <Link to="/terms" className="hover:text-foreground">
+            Terms of Service
+          </Link>
+        </span>
         <span className="font-mono">Windows · macOS · Linux · Android · Web</span>
       </div>
     </footer>
