@@ -34,3 +34,12 @@ use the editor.
 - A download button renders only when a build is `available` and has a real `downloadUrl`; otherwise "Coming Soon". Why: never fake downloads.
 - Product web app URLs come from `VITE_XS_<PRODUCT>_URL` env vars (XS One defaults to the in-repo `/one` app). Why: apps deploy independently.
 - `/one` (XS One web app) renders without the marketing nav/footer and stores tasks in localStorage until accounts exist.
+- Brand logos are local files in `src/assets/` (imported by `src/components/site/brand.tsx`). Do NOT reintroduce `/__l5e/assets-v1/...` URLs — they only resolve on Lovable hosting.
+- Contact form opens a pre-filled GitHub issue (`src/lib/site.ts`); there is no backend email.
+
+## Build & deploy
+- `npm install` (npm; `bun.lock` also present for Lovable), `npm run dev` (port 8080), `npm run build`, `npm run lint`, `npm run test`.
+- Production target: Cloudflare Workers via Nitro (`cloudflare-module` preset). Build emits `.output/`; deploy with `cd .output/server && npx wrangler deploy` (requires `wrangler login` or `CLOUDFLARE_API_TOKEN`). Live at https://workingosofficial-org-xoensoft.xoensoft.workers.dev
+- `vite preview` does NOT work for this stack (expects `dist/server`); preview the real build with `npx wrangler dev` inside `.output/server`.
+- Security headers are set in `src/server.ts` (SSR) and `public/_headers` (static assets, merged into `.output/public/_headers` by Nitro).
+- XS One Android APK is hosted as a GitHub Release asset on this repo, not in `public/` (too large for Workers static assets). Update `src/data/products.ts` when cutting a new release.
