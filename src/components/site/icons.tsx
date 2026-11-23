@@ -7,6 +7,13 @@ import {
   MessageSquare,
   Users,
   Crown,
+  PenLine,
+  Folder,
+  FileText,
+  Download,
+  Building2,
+  Save,
+  Lock,
 } from "lucide-react";
 import type { FeatureIcon, Platform } from "@/data/products";
 
@@ -62,6 +69,13 @@ const featureIcons: Record<FeatureIcon, typeof Video> = {
   chat: MessageSquare,
   users: Users,
   crown: Crown,
+  penline: PenLine,
+  folder: Folder,
+  file: FileText,
+  download: Download,
+  building: Building2,
+  save: Save,
+  lock: Lock,
 };
 
 export function FeatureGlyph({

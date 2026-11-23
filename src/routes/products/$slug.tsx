@@ -9,8 +9,9 @@ import { BuildGrid } from "@/components/site/platform-builds";
 import { seo } from "@/lib/seo";
 import shotRoom from "@/assets/xs-meet-shot-room.png";
 import shotLanding from "@/assets/xs-meet-shot-landing.png";
+import shotWriterEditor from "@/assets/xs-writer-shot-editor.png";
 
-const screenshots = { room: shotRoom, landing: shotLanding } as const;
+const screenshots = { room: shotRoom, landing: shotLanding, editor: shotWriterEditor } as const;
 
 export const Route = createFileRoute("/products/$slug")({
   loader: ({ params }) => {
@@ -34,6 +35,17 @@ export const Route = createFileRoute("/products/$slug")({
         links: [{ rel: "canonical", href: "https://xoensoftofficial.pages.dev/products/xs-meet" }],
       };
     }
+    if (p.slug === "xs-writer") {
+      return {
+        meta: seo(
+          "XS Writer — Document Creation & Editing | XOENSOFT",
+          "Discover XS Writer by XOENSOFT, a professional document creation and editing platform featuring rich-text editing, document organization, collaboration, DOCX compatibility and multiple export formats.",
+        ),
+        links: [
+          { rel: "canonical", href: "https://xoensoftofficial.pages.dev/products/xs-writer" },
+        ],
+      };
+    }
     return {
       meta: seo(`${p.name} — ${p.tagline} | XOENSOFT`, p.description),
     };
@@ -46,6 +58,8 @@ function ProductPage() {
   const p = getProduct(slug)!;
   const related = products.filter((x) => x.slug !== slug).slice(0, 3);
   const shot = p.screenshot ? screenshots[p.screenshot] : undefined;
+  const shotHost =
+    p.webAppUrl && p.webAppUrl.startsWith("http") ? new URL(p.webAppUrl).host : undefined;
   return (
     <>
       <section className="relative overflow-hidden pt-20 pb-16 md:pt-28">
@@ -93,7 +107,7 @@ function ProductPage() {
                   <span className="h-2.5 w-2.5 rounded-full bg-accent" />
                   <span className="h-2.5 w-2.5 rounded-full bg-accent" />
                   <span className="ml-3 font-mono text-[11px] text-muted-foreground">
-                    xsmeet-xoensoft-official.pages.dev
+                    {shotHost ?? "xoensoftofficial.pages.dev"}
                   </span>
                   <span className="ml-auto font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                     Live application

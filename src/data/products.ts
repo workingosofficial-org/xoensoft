@@ -29,7 +29,21 @@ export interface Feature {
   icon?: FeatureIcon | undefined;
 }
 export type FeatureIcon =
-  "video" | "zap" | "shield" | "screen" | "pen" | "chat" | "users" | "crown";
+  | "video"
+  | "zap"
+  | "shield"
+  | "screen"
+  | "pen"
+  | "chat"
+  | "users"
+  | "crown"
+  | "penline"
+  | "folder"
+  | "file"
+  | "download"
+  | "building"
+  | "save"
+  | "lock";
 export interface Product {
   slug: string;
   name: string;
@@ -50,7 +64,7 @@ export interface Product {
   heroDescription?: string | undefined;
   launchLabel?: string | undefined;
   howItWorks?: Feature[] | undefined;
-  screenshot?: "room" | "landing" | undefined;
+  screenshot?: "room" | "landing" | "editor" | undefined;
   logo?: "mark" | "wordmark" | undefined;
   finalCta?: { heading: string; body: string } | undefined;
 }
@@ -107,6 +121,8 @@ function withWeb(builds: PlatformBuild[], url?: string): PlatformBuild[] {
 const oneUrl = env["VITE_XS_ONE_URL"] || "/one";
 // Official production deployment of the XS Meet web application.
 const meetUrl = env["VITE_XS_MEET_URL"] || "https://xsmeet-xoensoft-official.pages.dev";
+// Official production deployment of the XS Writer web application.
+const writerUrl = env["VITE_XS_WRITER_URL"] || "https://xs-writer-xoensoft-official.pages.dev";
 
 export const products: Product[] = [
   {
@@ -330,36 +346,84 @@ export const products: Product[] = [
     slug: "xs-writer",
     name: "XS Writer",
     short: "Writer",
-    domain: "Documents",
-    category: "Documents",
-    tagline: "Write with clarity. Publish with confidence.",
+    domain: "Productivity & Document Creation",
+    category: "Document creation & editing",
+    tagline: "Create. Edit. Organize. Collaborate.",
     description:
-      "A minimalist document editor with professional typography, page formatting and export to the formats you need.",
-    status: "in-development",
-    webAppUrl: env["VITE_XS_WRITER_URL"],
-    openLabel: "Open Writer",
+      "XS Writer is a professional document creation and editing platform by XOENSOFT, featuring rich-text editing, document organization, collaboration, DOCX compatibility and multiple export formats.",
+    status: "available",
+    webAppUrl: writerUrl,
+    openLabel: "Launch XS Writer",
+    launchLabel: "Launch XS Writer",
     preview: "writer",
+    heroHeadline: "Create. Edit. Organize. Collaborate.",
+    heroDescription:
+      "XS Writer is a professional document creation and editing platform designed to simplify document workflows. Create and format documents, organize files, collaborate with authorized users and export your work into multiple formats.",
+    screenshot: "editor",
+    finalCta: {
+      heading: "Ready to write with XS Writer?",
+      body: "Start creating professional documents with XOENSOFT's document platform.",
+    },
     sections: [
       {
-        title: "Document editor",
-        body: "A focused writing surface with styles, lists, tables and images.",
+        title: "Professional Rich-Text Editor",
+        body: "Format text, headings, lists and more in a clean, focused writing surface.",
+        icon: "penline",
       },
       {
-        title: "Professional typography",
-        body: "Carefully tuned type scales and spacing for documents that read well.",
+        title: "Document Organization and Folders",
+        body: "Keep every document structured with folders and an organised workspace.",
+        icon: "folder",
       },
       {
-        title: "Page formatting",
-        body: "Margins, headers, footers and page breaks for print-ready output.",
+        title: "DOCX Import and Export",
+        body: "Open and save industry-standard DOCX files without losing your work.",
+        icon: "file",
       },
-      { title: "Export options", body: "Export to PDF and DOCX without losing your layout." },
+      {
+        title: "PDF, HTML, Markdown and TXT Export",
+        body: "Export your documents into the formats you need — PDF, HTML, Markdown and plain text.",
+        icon: "download",
+      },
+      {
+        title: "Personal and Organization Workspaces",
+        body: "Work in a personal space or collaborate inside a shared organization workspace.",
+        icon: "building",
+      },
+      {
+        title: "Autosave and Document Recovery",
+        body: "Your work saves automatically, with recovery to protect against lost changes.",
+        icon: "save",
+      },
+      {
+        title: "Secure Document Access",
+        body: "Documents stay protected behind XOENSOFT authentication and access controls.",
+        icon: "lock",
+      },
+      {
+        title: "Collaboration Features",
+        body: "Share and work on documents with authorized users in real time.",
+        icon: "users",
+      },
     ],
-    useCases: ["Reports and proposals", "Letters and contracts", "Long-form writing"],
+    useCases: [
+      "Reports and proposals",
+      "Contracts and letters",
+      "Team documentation",
+      "Long-form writing",
+    ],
     release: {
-      version: "0.6.0",
-      status: "planned",
-      releaseNotes: ["Rich text editor", "Page layout", "PDF and DOCX export"],
-      builds: planned(["windows", "macos", "linux", "web"]),
+      version: "1.0.0",
+      releaseDate: "November 2026",
+      status: "stable",
+      releaseNotes: [
+        "Rich-text document editor",
+        "Document organization with folders",
+        "DOCX, PDF, HTML, Markdown and TXT export",
+        "Personal and organization workspaces",
+        "Autosave with document recovery",
+      ],
+      builds: withWeb(planned(["windows", "macos", "linux", "android"]), writerUrl),
     },
   },
   {
