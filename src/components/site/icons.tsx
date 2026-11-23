@@ -1,4 +1,14 @@
-import type { Platform } from "@/data/products";
+import {
+  Video,
+  Zap,
+  ShieldCheck,
+  ScreenShare,
+  PenTool,
+  MessageSquare,
+  Users,
+  Crown,
+} from "lucide-react";
+import type { FeatureIcon, Platform } from "@/data/products";
 
 export function PlatformIcon({
   platform,
@@ -41,6 +51,28 @@ export function PlatformIcon({
         </svg>
       );
   }
+}
+
+const featureIcons: Record<FeatureIcon, typeof Video> = {
+  video: Video,
+  zap: Zap,
+  shield: ShieldCheck,
+  screen: ScreenShare,
+  pen: PenTool,
+  chat: MessageSquare,
+  users: Users,
+  crown: Crown,
+};
+
+export function FeatureGlyph({
+  icon,
+  className = "h-5 w-5",
+}: {
+  icon: FeatureIcon;
+  className?: string;
+}) {
+  const C = featureIcons[icon];
+  return <C className={className} aria-hidden />;
 }
 
 /** Monogram tile used as each product's icon. */

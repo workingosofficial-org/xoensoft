@@ -1,12 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { products, type Platform, platformLabel } from "@/data/products";
+import { products, getProduct, type Platform, platformLabel } from "@/data/products";
 import { Wordmark } from "@/components/site/brand";
 import { Intro } from "@/components/site/intro";
 import { Reveal } from "@/components/site/reveal";
 import { ProductCard } from "@/components/site/product-card";
-import { PlatformIcon } from "@/components/site/icons";
+import { FeatureGlyph, PlatformIcon } from "@/components/site/icons";
 import { btnGhost, btnPrimary } from "@/components/site/actions";
 import { seo } from "@/lib/seo";
+import xsMeetLogo from "@/assets/xs-meet-logo.png";
+import xsMeetShot from "@/assets/xs-meet-shot-room.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -85,6 +87,8 @@ function Home() {
         </div>
       </section>
 
+      <MeetSpotlight />
+
       <section id="ecosystem" className="border-t border-border py-28">
         <div className="container-x grid gap-16 lg:grid-cols-[1fr_1.2fr]">
           <Reveal>
@@ -152,5 +156,68 @@ function Home() {
         </Reveal>
       </section>
     </>
+  );
+}
+
+const meet = getProduct("xs-meet")!;
+const meetHighlights = meet.sections.slice(0, 4);
+
+function MeetSpotlight() {
+  return (
+    <section className="border-t border-border bg-surface py-28">
+      <div className="container-x grid items-center gap-14 lg:grid-cols-[1fr_1.15fr]">
+        <Reveal>
+          <img src={xsMeetLogo} alt="XS Meet" className="h-8 w-auto" />
+          <p className="eyebrow mt-10">Introducing</p>
+          <h2 className="display mt-4 text-4xl md:text-6xl">XS Meet</h2>
+          <p className="mt-6 max-w-md text-lg leading-relaxed text-muted-foreground">
+            A smarter way to meet, communicate, and collaborate — real-time video, audio, screen
+            sharing and an interactive whiteboard in one platform.
+          </p>
+          <ul className="mt-8 space-y-3">
+            {meetHighlights.map((f) => (
+              <li key={f.title} className="flex items-start gap-3 text-sm">
+                {f.icon && <FeatureGlyph icon={f.icon} className="mt-0.5 h-4 w-4 shrink-0" />}
+                <span>
+                  <span className="text-foreground">{f.title}</span>
+                  <span className="text-muted-foreground"> — {f.body}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Link to="/products/$slug" params={{ slug: "xs-meet" }} className={btnGhost}>
+              Explore XS Meet
+            </Link>
+            <a
+              href={meet.webAppUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={btnPrimary}
+            >
+              Launch XS Meet
+            </a>
+          </div>
+        </Reveal>
+        <Reveal delay={120}>
+          <div className="overflow-hidden rounded-lg border border-border bg-background shadow-2xl">
+            <div className="flex items-center gap-2 border-b border-border px-4 py-3">
+              <span className="h-2.5 w-2.5 rounded-full bg-accent" />
+              <span className="h-2.5 w-2.5 rounded-full bg-accent" />
+              <span className="h-2.5 w-2.5 rounded-full bg-accent" />
+              <span className="ml-3 font-mono text-[11px] text-muted-foreground">
+                xsmeet-xoensoft-official.pages.dev
+              </span>
+            </div>
+            <img
+              src={xsMeetShot}
+              alt="XS Meet meeting room interface"
+              className="w-full"
+              loading="lazy"
+            />
+          </div>
+        </Reveal>
+      </div>
+    </section>
   );
 }

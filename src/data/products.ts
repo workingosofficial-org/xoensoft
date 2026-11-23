@@ -26,7 +26,10 @@ export interface Release {
 export interface Feature {
   title: string;
   body: string;
+  icon?: FeatureIcon | undefined;
 }
+export type FeatureIcon =
+  "video" | "zap" | "shield" | "screen" | "pen" | "chat" | "users" | "crown";
 export interface Product {
   slug: string;
   name: string;
@@ -42,6 +45,14 @@ export interface Product {
   sections: Feature[];
   useCases: string[];
   release: Release;
+  /** Optional richer product-page content (used by launched products). */
+  heroHeadline?: string | undefined;
+  heroDescription?: string | undefined;
+  launchLabel?: string | undefined;
+  howItWorks?: Feature[] | undefined;
+  screenshot?: "room" | "landing" | undefined;
+  logo?: "mark" | "wordmark" | undefined;
+  finalCta?: { heading: string; body: string } | undefined;
 }
 
 const env = import.meta.env as Record<string, string | undefined>;
@@ -94,6 +105,8 @@ function withWeb(builds: PlatformBuild[], url?: string): PlatformBuild[] {
 }
 
 const oneUrl = env["VITE_XS_ONE_URL"] || "/one";
+// Official production deployment of the XS Meet web application.
+const meetUrl = env["VITE_XS_MEET_URL"] || "https://xsmeet-xoensoft-official.pages.dev";
 
 export const products: Product[] = [
   {
@@ -183,29 +196,98 @@ export const products: Product[] = [
     name: "XS Meet",
     short: "Meet",
     domain: "Communication",
-    category: "Video conferencing",
-    tagline: "Meetings that simply work.",
+    category: "Online meetings & collaboration",
+    tagline: "Meet. Connect. Collaborate.",
     description:
-      "Video and audio meetings with screen sharing and meeting rooms — reliable, clear and professional.",
-    status: "in-development",
-    webAppUrl: env["VITE_XS_MEET_URL"],
-    openLabel: "Open Meet",
+      "XS Meet is a modern online meeting and real-time collaboration platform designed to make virtual communication simple, seamless, and reliable.",
+    status: "available",
+    webAppUrl: meetUrl,
+    openLabel: "Launch XS Meet",
+    launchLabel: "Launch XS Meet",
     preview: "meet",
+    heroHeadline: "Meet. Connect. Collaborate.",
+    heroDescription:
+      "Experience seamless online meetings with real-time video, audio, screen sharing, and interactive collaboration — all in one platform.",
+    screenshot: "room",
+    logo: "wordmark",
+    finalCta: {
+      heading: "Ready to connect with XS Meet?",
+      body: "Start your next meeting with XOENSOFT's online meeting platform.",
+    },
     sections: [
       {
-        title: "Video conferencing",
-        body: "Crisp video with an interface that stays out of the conversation.",
+        title: "HD Audio & Video Meetings",
+        body: "Crystal-clear video and audio so every call feels like you're in the same room.",
+        icon: "video",
       },
-      { title: "Audio meetings", body: "Join by voice alone when you're on the move." },
-      { title: "Meeting rooms", body: "Persistent rooms for teams, with links that never change." },
-      { title: "Screen sharing", body: "Share a window, a tab or your whole screen in one click." },
+      {
+        title: "Instant Meeting Creation",
+        body: "Start a meeting in seconds or join instantly with a shared link — no scheduling required.",
+        icon: "zap",
+      },
+      {
+        title: "Secure Waiting Room",
+        body: "Control who enters your meeting with an admission lobby and host-approved entry.",
+        icon: "shield",
+      },
+      {
+        title: "Screen Sharing",
+        body: "Share your screen, window or tab to walk everyone through exactly what matters.",
+        icon: "screen",
+      },
+      {
+        title: "Interactive Whiteboard",
+        body: "Sketch, annotate and brainstorm together on a shared canvas during live sessions.",
+        icon: "pen",
+      },
+      {
+        title: "Real-Time Meeting Chat",
+        body: "Keep the conversation going with in-meeting chat — questions, links and quick replies.",
+        icon: "chat",
+      },
+      {
+        title: "Participant Management",
+        body: "See who is in the room, mute or remove participants, and keep sessions organised.",
+        icon: "users",
+      },
+      {
+        title: "Host & Co-host Controls",
+        body: "Full control over admission, sharing and moderation — with co-hosts for larger teams.",
+        icon: "crown",
+      },
     ],
-    useCases: ["Team stand-ups", "Client calls", "Remote workshops"],
+    useCases: [
+      "Team stand-ups and daily syncs",
+      "Client calls and demos",
+      "Remote workshops and training",
+      "Interviews and all-hands meetings",
+    ],
+    howItWorks: [
+      {
+        title: "Create or Join",
+        body: "Start an instant meeting or join using a meeting link.",
+      },
+      {
+        title: "Connect",
+        body: "Communicate through live audio and video with every participant.",
+      },
+      {
+        title: "Collaborate",
+        body: "Share your screen, use the whiteboard, and interact through chat.",
+      },
+    ],
     release: {
-      version: "0.4.0",
-      status: "planned",
-      releaseNotes: ["Video and audio calls", "Screen sharing", "Meeting rooms"],
-      builds: planned(["windows", "macos", "linux", "android", "web"]),
+      version: "1.0.0",
+      releaseDate: "November 2026",
+      status: "stable",
+      releaseNotes: [
+        "HD audio and video meetings",
+        "Screen sharing and interactive whiteboard",
+        "Meeting chat and participant management",
+        "Secure waiting room with host controls",
+        "Meeting history",
+      ],
+      builds: withWeb(planned(["web", "windows", "macos", "linux", "android"]), meetUrl),
     },
   },
   {
